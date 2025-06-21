@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kigali Green Restaurant and Lodge - Home</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0; padding: 0;
+      background-color: #e6f2e6;
+      color: #222;
+    }
+    header, footer {
+      background-color: #2e7d32;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    nav a:hover,
+    nav a.active {
+      color: #a4d17a;
+      text-decoration: underline;
+    }
+    select.language {
+      background: white;
+      color: #2e7d32;
+      font-weight: bold;
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-left: 1rem;
+    }
+    main {
+      max-width: 1100px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1rem;
+      min-height: 70vh;
+    }
+    section {
+      display: none;
+    }
+    section.active {
+      display: block;
+    }
+    h1, h2, h3 {
+      color: #2e7d32;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 1.5rem;
+    }
+    .menu-item {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      text-align: center;
+      padding-bottom: 1rem;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .menu-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .menu-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid #ddd;
+      display: block;
+    }
+    form input, form textarea, form button, form select {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    form button {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+    }
+    form button:hover {
+      background-color: #1b5e20;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.9rem;
+      background-color: #1b5e20;
+      color: #dcedc8;
+    }
+    #bookingConfirmation, #orderConfirmation {
+      margin-top: 1rem;
+      color: green;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      nav {
+        margin-top: 0.5rem;
+      }
+    }
+  </style>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+</head>
+<body>
+
+<header>
+  <h1>Kigali Green Restaurant and Lodge</h1>
+  <nav id="navLinks">
+    <a href="#" data-section="home" class="active" data-i18n="navHome">Home</a>
+    <a href="#" data-section="menu" data-i18n="navMenu">Menu</a>
+    <a href="#" data-section="booking" data-i18n="navBooking">Booking</a>
+    <a href="#" data-section="order" data-i18n="navOrder">Order</a>
+    <a href="#" data-section="about" data-i18n="navAbout">About</a>
+    <a href="#" data-section="contact" data-i18n="navContact">Contact</a>
+    <a href="#" data-section="admin" data-i18n="navAdmin">Admin</a>
+  </nav>
+  <select class="language" id="languageSelect" aria-label="Language selector">
+    <option value="en">English</option>
+    <option value="rw">Kinyarwanda</option>
+  </select>
+</header>
+
+<main>
+  <section id="home" class="active">
+    <h2 data-i18n="homeTitle">Welcome to Kigali Green Restaurant and Lodge</h2>
+    <p data-i18n="homeIntro">Fresh from farm to your plate! Healthy and sustainable meals, every day.</p>
+
+    <h3 data-i18n="whoWeAreTitle">Who We Are</h3>
+    <p data-i18n="whoWeAreText">We are committed to serving healthy, farm-fresh meals and providing comfortable lodging, supporting local farmers and sustainable agriculture.</p>
+
+    <h3 data-i18n="ourMissionTitle">Our Mission</h3>
+    <p data-i18n="ourMissionText">To provide delicious, nutritious meals and quality lodging with locally sourced ingredients and eco-friendly practices.</p>
+
+    <h3 data-i18n="ourVisionTitle">Our Vision</h3>
+    <p data-i18n="ourVisionText">To be Rwanda’s premier farm-to-table restaurant and eco-lodge, inspiring healthy living and sustainable tourism.</p>
+  </section>
+
+  <section id="menu">
+    <h2 data-i18n="menuTitle">Our Menu</h2>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?salad" alt="Fresh Garden Salad" />
+        <h4 data-i18n="menuItem1Name">Fresh Garden Salad</h4>
+        <p data-i18n="menuItem1Desc">Organic vegetables with house dressing</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?chicken" alt="Grilled Chicken" />
+        <h4 data-i18n="menuItem2Name">Grilled Chicken</h4>
+        <p data-i18n="menuItem2Desc">Free-range chicken with seasonal sides</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?vegetarian" alt="Vegetarian Delight" />
+        <h4 data-i18n="menuItem3Name">Vegetarian Delight</h4>
+        <p data-i18n="menuItem3Desc">Rich in flavor, fresh from the farm</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?beef" alt="Beef Steak" />
+        <h4 data-i18n="menuItem4Name">Beef Steak</h4>
+        <p data-i18n="menuItem4Desc">Grass-fed beef with garlic herb butter</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?fish" alt="Grilled Tilapia" />
+        <h4 data-i18n="menuItem5Name">Grilled Tilapia</h4>
+        <p data-i18n="menuItem5Desc">Fresh lake tilapia grilled to perfection</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://source.unsplash.com/400x300/?pasta" alt="Herb Pasta" />
+        <h4 data-i18n="menuItem6Name">Herb Pasta</h4>
+        <p data-i18n="menuItem6Desc">Homemade pasta tossed in herb sauce</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <h2 data-i18n="bookingTitle">Book a Table</h2>
+    <form id="bookingForm">
+      <input type="text" name="name" placeholder="Your Name" data-i18n-placeholder="bookingNamePlaceholder" required />
+      <input type="tel" name="phone" placeholder="Phone Number" data-i18n-placeholder="bookingPhonePlaceholder" required />
+      <input type="date" name="date" required />
+      <input type="time" name="time" required />
+      <input type="number" name="guests" min="1" max="20" placeholder="Number of Guests" data-i18n-placeholder="bookingGuestsPlaceholder" required />
+      <button type="submit" data-i18n="bookingSubmit">Book Now</button>
+    </form>
+    <div id="bookingConfirmation" role="alert" aria-live="polite"></div>
+  </section>
+
+  <section id="order">
+    <h2 data-i18n="orderTitle">Place Your Order</h2>
+    <form id="orderForm">
+      <input type="text" name="name" placeholder="Your Name" data-i18n-placeholder="orderNamePlaceholder" required />
+      <input type="tel" name="phone" placeholder="Phone Number" data-i18n-placeholder="orderPhonePlaceholder" required />
+      <textarea name="details" placeholder="Order Details" data-i18n-placeholder="orderDetailsPlaceholder" required></textarea>
+      <input type="number" name="amount" placeholder="Amount in RWF" data-i18n-placeholder="orderAmountPlaceholder" min="100" required />
+      <input type="tel" name="momo" placeholder="MoMo Number" data-i18n-placeholder="orderMoMoPlaceholder" required />
+      <button type="submit" data-i18n="orderSubmit">Send Order & Mock Pay</button>
+    </form>
+    <div id="orderConfirmation" role="alert" aria-live="polite"></div>
+  </section>
+
+  <section id="about">
+    <h2 data-i18n="aboutTitle">About Us</h2>
+    <p data-i18n="aboutText">Kigali Green Restaurant and Lodge is committed to providing sustainable farm-to-table meals and comfortable eco-friendly lodging.</p>
+
+    <h3 data-i18n="whoWeAreTitle2">Who We Are</h3>
+    <p data-i18n="whoWeAreText2">We support local farmers and promote environmental sustainability.</p>
+
+    <h3 data-i18n="ourMissionTitle2">Our Mission</h3>
+    <p data-i18n="ourMissionText2">To offer delicious, nutritious meals and quality lodging with a focus on sustainability.</p>
+
+    <h3 data-i18n="ourVisionTitle2">Our Vision</h3>
+    <p data-i18n="ourVisionText2">To be the leader in sustainable dining and lodging experiences in Rwanda.</p>
+  </section>
+
+  <section id="contact">
+    <h2 data-i18n="contactTitle">Contact Us</h2>
+    <p data-i18n="contactPhone">Phone: +250 780 426 213</p>
+    <p>Email: <a href="mailto:kigalirestaurant250@gmail.com" data-i18n="contactEmail">kigalirestaurant250@gmail.com</a></p>
+    <p data-i18n="contactAddress">Address: KG 7 Ave, Kigali, Rwanda</p>
+  </section>
+
+  <section id="admin">
+    <h2 data-i18n="adminTitle">Admin Panel</h2>
+    <p data-i18n="adminText">Below are bookings and orders stored in the database.</p>
+
+    <h3 data-i18n="bookingsTitle">Bookings</h3>
+    <table id="bookingsTable" aria-label="Bookings Table">
+      <thead>
+        <tr>
+          <th data-i18n="bookingsName">Name</th>
+          <th data-i18n="bookingsPhone">Phone</th>
+          <th data-i18n="bookingsDate">Date</th>
+          <th data-i18n="bookingsTime">Time</th>
+          <th data-i18n="bookingsGuests">Guests</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h3 data-i18n="ordersTitle">Orders</h3>
+    <table id="ordersTable" aria-label="Orders Table">
+      <thead>
+        <tr>
+          <th data-i18n="ordersName">Name</th>
+          <th data-i18n="ordersPhone">Phone</th>
+          <th data-i18n="ordersDetails">Order Details</th>
+          <th data-i18n="ordersAmount">Amount (RWF)</th>
+          <th data-i18n="ordersMoMo">MoMo Number</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 Kigali Green Restaurant and Lodge</p>
+</footer>
+
+<script>
+  // Firebase config - Replace with your config!
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const navLinks = document.querySelectorAll('nav a');
+  const sections = document.querySelectorAll('main > section');
+  const pageTitles = {
+    home: "Home",
+    menu: "Menu",
+    booking: "Booking",
+    order: "Order",
+    about: "About",
+    contact: "Contact",
+    admin: "Admin"
+  };
+
+  function showSection(sectionId) {
+    navLinks.forEach(l => l.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    document.querySelector(`nav a[data-section="${sectionId}"]`).classList.add('active');
+    document.getElementById(sectionId).classList.add('active');
+    document.title = `Kigali Green Restaurant and Lodge - ${pageTitles[sectionId]}`;
+    window.scrollTo({top:0, behavior: 'smooth'});
+  }
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const section = link.getAttribute('data-section');
+      showSection(section);
+    });
+  });
+
+  // Load bookings and orders for admin panel
+  async function loadBookings() {
+    const tbody = document.querySelector('#bookingsTable tbody');
+    tbody.innerHTML = '';
+    try {
+      const snapshot = await db.collection('bookings').orderBy('timestamp', 'desc').get();
+      snapshot.forEach(doc => {
+        const b = doc.data();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${b.name}</td>
+          <td>${b.phone}</td>
+          <td>${b.date}</td>
+          <td>${b.time}</td>
+          <td>${b.guests}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (error) {
+      console.error("Error loading bookings:", error);
+    }
+  }
+
+  async function loadOrders() {
+    const tbody = document.querySelector('#ordersTable tbody');
+    tbody.innerHTML = '';
+    try {
+      const snapshot = await db.collection('orders').orderBy('timestamp', 'desc').get();
+      snapshot.forEach(doc => {
+        const o = doc.data();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${o.name}</td>
+          <td>${o.phone}</td>
+          <td>${o.details}</td>
+          <td>${o.amount}</td>
+          <td>${o.momo}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (error) {
+      console.error("Error loading orders:", error);
+    }
+  }
+
+  // Show admin data when admin section is shown
+  const adminSection = document.getElementById('admin');
+  const observer = new MutationObserver(() => {
+    if (adminSection.classList.contains('active')) {
+      loadBookings();
+      loadOrders();
+    }
+  });
+  observer.observe(adminSection, { attributes: true, attributeFilter: ['class'] });
+
+  // Booking form submit
+  const bookingForm = document.getElementById('bookingForm');
+  const bookingConfirmation = document.getElementById('bookingConfirmation');
+
+  bookingForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const formData = new FormData(bookingForm);
+    const name = formData.get('name');
+    const phone = formData.get('phone');
+    const date = formData.get('date');
+    const time = formData.get('time');
+    const guests = formData.get('guests');
+
+    try {
+      await db.collection('bookings').add({
+        name, phone, date, time, guests,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      bookingConfirmation.textContent = `Thank you, ${name}! Your table for ${guests} guests on ${date} at ${time} has been booked. We will contact you at ${phone}.`;
+      bookingForm.reset();
+    } catch (error) {
+      bookingConfirmation.textContent = "Error submitting booking. Please try again.";
+      console.error("Booking error:", error);
+    }
+  });
+
+  // Order form submit
+  const orderForm = document.getElementById('orderForm');
+  const orderConfirmation = document.getElementById('orderConfirmation');
+
+  orderForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const formData = new FormData(orderForm);
+    const name = formData.get('name');
+    const phone = formData.get('phone');
+    const details = formData.get('details');
+    const amount = parseFloat(formData.get('amount'));
+    const momo = formData.get('momo');
+
+    if (amount < 100) {
+      alert('Amount must be at least 100 RWF');
+      return;
+    }
+
+    try {
+      await db.collection('orders').add({
+        name, phone, details, amount, momo,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      orderConfirmation.textContent = `Thank you, ${name}! Your order has been received. We will contact you shortly on ${phone}.`;
+      orderForm.reset();
+    } catch (error) {
+      orderConfirmation.textContent = "Error submitting order. Please try again.";
+      console.error("Order error:", error);
+    }
+  });
+
+  // --- Multi-language translation ---
+
+  const translations = {
+    en: {
+      navHome: "Home",
+      navMenu: "Menu",
+      navBooking: "Booking",
+      navOrder: "Order",
+      navAbout: "About",
+      navContact: "Contact",
+      navAdmin: "Admin",
+
+      homeTitle: "Welcome to Kigali Green Restaurant and Lodge",
+      homeIntro: "Fresh from farm to your plate! Healthy and sustainable meals, every day.",
+      whoWeAreTitle: "Who We Are",
+      whoWeAreText: "We are committed to serving healthy, farm-fresh meals and providing comfortable lodging, supporting local farmers and sustainable agriculture.",
+      ourMissionTitle: "Our Mission",
+      ourMissionText: "To provide delicious, nutritious meals and quality lodging with locally sourced ingredients and eco-friendly practices.",
+      ourVisionTitle: "Our Vision",
+      ourVisionText: "To be Rwanda’s premier farm-to-table restaurant and eco-lodge, inspiring healthy living and sustainable tourism.",
+
+      menuTitle: "Our Menu",
+      menuItem1Name: "Fresh Garden Salad",
+      menuItem1Desc: "Organic vegetables with house dressing",
+      menuItem2Name: "Grilled Chicken",
+      menuItem2Desc: "Free-range chicken with seasonal sides",
+      menuItem3Name: "Vegetarian Delight",
+      menuItem3Desc: "Rich in flavor, fresh from the farm",
+      menuItem4Name: "Beef Steak",
+      menuItem4Desc: "Grass-fed beef with garlic herb butter",
+      menuItem5Name: "Grilled Tilapia",
+      menuItem5Desc: "Fresh lake tilapia grilled to perfection",
+      menuItem6Name: "Herb Pasta",
+      menuItem6Desc: "Homemade pasta tossed in herb sauce",
+
+      bookingTitle: "Book a Table",
+      bookingNamePlaceholder: "Your Name",
+      bookingPhonePlaceholder: "Phone Number",
+      bookingGuestsPlaceholder: "Number of Guests",
+      bookingSubmit: "Book Now",
+
+      orderTitle: "Place Your Order",
+      orderNamePlaceholder: "Your Name",
+      orderPhonePlaceholder: "Phone Number",
+      orderDetailsPlaceholder: "Order Details",
+      orderAmountPlaceholder: "Amount in RWF",
+      orderMoMoPlaceholder: "MoMo Number",
+      orderSubmit: "Send Order & Mock Pay",
+
+      aboutTitle: "About Us",
+      aboutText: "Kigali Green Restaurant and Lodge is committed to providing sustainable farm-to-table meals and comfortable eco-friendly lodging.",
+      whoWeAreTitle2: "Who We Are",
+      whoWeAreText2: "We support local farmers and promote environmental sustainability.",
+      ourMissionTitle2: "Our Mission",
+      ourMissionText2: "To offer delicious, nutritious meals and quality lodging with a focus on sustainability.",
+      ourVisionTitle2: "Our Vision",
+      ourVisionText2: "To be the leader in sustainable dining and lodging experiences in Rwanda.",
+
+      contactTitle: "Contact Us",
+      contactPhone: "Phone: +250 780 426 213",
+      contactEmail: "kigalirestaurant250@gmail.com",
+      contactAddress: "Address: KG 7 Ave, Kigali, Rwanda",
+
+      adminTitle: "Admin Panel",
+      adminText: "Below are bookings and orders stored in the database.",
+      bookingsTitle: "Bookings",
+      bookingsName: "Name",
+      bookingsPhone: "Phone",
+      bookingsDate: "Date",
+      bookingsTime: "Time",
+      bookingsGuests: "Guests",
+      ordersTitle: "Orders",
+      ordersName: "Name",
+      ordersPhone: "Phone",
+      ordersDetails: "Order Details",
+      ordersAmount: "Amount (RWF)",
+      ordersMoMo: "MoMo Number",
+    },
+
+    rw: {
+      navHome: "Ahabanza",
+      navMenu: "Menu",
+      navBooking: "Gukata Intebe",
+      navOrder: "Gutegeka",
+      navAbout: "Ibyerekeye",
+      navContact: "Twandikire",
+      navAdmin: "Abayobozi",
+
+      homeTitle: "Murakaza Neza muri Kigali Green Restaurant na Lodge",
+      homeIntro: "Ibikomoka ku mirima bitunganyirizwa ku meza yawe! Amafunguro meza kandi arambye, buri munsi.",
+      whoWeAreTitle: "Turi Bande",
+      whoWeAreText: "Twiyemeje gutanga amafunguro meza avuye ku mirima ndetse no gutanga ahantu ho kurara hizewe, dushyigikira abahinzi b'aho ndetse n'ubuhinzi burambye.",
+      ourMissionTitle: "Intego yacu",
+      ourMissionText: "Gutanga amafunguro meza, yuzuye intungamubiri n'ahantu ho kurara hizewe dukoresheje ibikomoka mu gihugu kandi bikurikirana ibidukikije.",
+      ourVisionTitle: "Icyerekezo cyacu",
+      ourVisionText: "Kuba resitora na lodge iyoboye mu Rwanda mu gutanga amafunguro avuye ku mirima n'ahantu ho kurara hatangiza ibidukikije.",
+
+      menuTitle: "Menu yacu",
+      menuItem1Name: "Salade y’imboga nshya",
+      menuItem1Desc: "Imboga gakondo hamwe na sauce yacu",
+      menuItem2Name: "Inkoko itogoswe",
+      menuItem2Desc: "Inkoko yo mu murima hamwe n’ibiryo by’ibihe",
+      menuItem3Name: "Ifunguro ry’abatararya inyama",
+      menuItem3Desc: "Ryuzuye uburyohe, biturutse ku murima",
+      menuItem4Name: "Steak y’inka",
+      menuItem4Desc: "Inka yororotse ifite sauce ya garlic",
+      menuItem5Name: "Tilapia yokeje",
+      menuItem5Desc: "Tilapia yo mu kiyaga yokeje neza",
+      menuItem6Name: "Pasta ifite ibyatsi",
+      menuItem6Desc: "Pasta yakozwe mu rugo ifite sauce y’icyatsi",
+
+      bookingTitle: "Gukata Intebe",
+      bookingNamePlaceholder: "Izina ryawe",
+      bookingPhonePlaceholder: "Numero ya telefone",
+      bookingGuestsPlaceholder: "Umubare w'abantu",
+      bookingSubmit: "Tegura",
+
+      orderTitle: "Tegura Itegeko ryawe",
+      orderNamePlaceholder: "Izina ryawe",
+      orderPhonePlaceholder: "Numero ya telefone",
+      orderDetailsPlaceholder: "Ibisobanuro by’itegeko",
+      orderAmountPlaceholder: "Amafaranga mu RWF",
+      orderMoMoPlaceholder: "Numero ya MoMo",
+      orderSubmit: "Ohereza Itegeko & Kwishyura",
+
+      aboutTitle: "Ibyerekeye",
+      aboutText: "Kigali Green Restaurant na Lodge byiyemeje gutanga amafunguro arambye ava ku murima ndetse no gutanga ahantu ho kurara hizewe.",
+      whoWeAreTitle2: "Turi Bande",
+      whoWeAreText2: "Dushyigikira abahinzi b'aho kandi dutera inkunga ibidukikije.",
+      ourMissionTitle2: "Intego yacu",
+      ourMissionText2: "Gutanga amafunguro meza n'ahantu ho kurara bifite intego yo kurengera ibidukikije.",
+      ourVisionTitle2: "Icyerekezo cyacu",
+      ourVisionText2: "Kuba indashyikirwa mu gutanga serivisi z’ikirenga mu Rwanda.",
+
+      contactTitle: "Twandikire",
+      contactPhone: "Telefone: +250 780 426 213",
+      contactEmail: "kigalirestaurant250@gmail.com",
+      contactAddress: "Aderesi: KG 7 Ave, Kigali, Rwanda",
+
+      adminTitle: "Panel y’Abayobozi",
+      adminText: "Hano hari gahunda zose zo gukata intebe no gutumiza ziri muri database.",
+      bookingsTitle: "Gukata Intebe",
+      bookingsName: "Izina",
+      bookingsPhone: "Telefone",
+      bookingsDate: "Italiki",
+      bookingsTime: "Igihe",
+      bookingsGuests: "Abantu",
+      ordersTitle: "Itegeko",
+      ordersName: "Izina",
+      ordersPhone: "Telefone",
+      ordersDetails: "Ibisobanuro by’itegeko",
+      ordersAmount: "Amafaranga (RWF)",
+      ordersMoMo: "Numero ya MoMo",
+    }
+  };
+
+  // Language toggle and translation
+  const languageSelect = document.getElementById('languageSelect');
+  const elementsToTranslate = document.querySelectorAll('[data-i18n]');
+  const placeholdersToTranslate = document.querySelectorAll('[data-i18n-placeholder]');
+
+  function translatePage(lang) {
+    elementsToTranslate.forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+    placeholdersToTranslate.forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (translations[lang] && translations[lang][key]) {
+        el.placeholder = translations[lang][key];
+      }
+    });
+  }
+
+  languageSelect.addEventListener('change', () => {
+    const lang = languageSelect.value;
+    translatePage(lang);
+  });
+
+  // Initialize with English
+  translatePage('en');
+
+</script>
+
+</body>
+</html>
